@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SoladuimAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,17 @@ namespace SoladuimGame
     {
         public static void Run()
         {
-            int i = 10;
-            Console.WriteLine("IM WORK");
+            SProfiler.Start("YEAH");
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine(i);
+            }
+            //Soladuim.Print();
+            //var task = SProfiler.End();
+            //Console.WriteLine(task.time);
+
+            //FIX CLOSE
+            //SEngine.Close();
         }
     }
 }

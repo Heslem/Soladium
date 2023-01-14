@@ -1,10 +1,9 @@
 #include "Window.h"
 
 #include <exception>
-#include "../Math/Vector2.h"
 #include <iostream>
 
-Window::Window(const char* title, const Vector2i& size)
+Window::Window(const char* title, const int& width, const int& height)
 {
     std::cout << "GLFW version: " << glfwGetVersionString() << std::endl;
 
@@ -19,7 +18,7 @@ Window::Window(const char* title, const Vector2i& size)
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 
-    m_Window = glfwCreateWindow(size.x, size.y, title, NULL, NULL);
+    m_Window = glfwCreateWindow(width, height, title, NULL, NULL);
     
     if (!m_Window) {
         std::cout << "Could't create window." << std::endl;
@@ -33,9 +32,13 @@ Window::Window(const char* title, const Vector2i& size)
         throw std::exception();
     }
 
-    int width, height;
-    glfwGetFramebufferSize(m_Window, &width, &height);
     glViewport(0, 0, width, height);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); 
 }
 
 Window::~Window()
@@ -50,12 +53,17 @@ void Window::pollEvents()
 
 void Window::clear()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::display()
 {
     glfwSwapBuffers(m_Window);
+}
+
+void Window::close()
+{
+    glfwSetWindowShouldClose(m_Window, 1);
 }
 
 bool Window::isOpen() const

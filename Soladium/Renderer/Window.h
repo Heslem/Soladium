@@ -7,20 +7,24 @@
 class Window
 {
 public:
-	Window(const char* title, const Vector2i& size);
+	Window(const char* title, const int& width, const int& height);
 	~Window();
 	Window(const Window&) = delete;
 
 	void pollEvents();
 	void clear();
 	void display();
+	void close();
 
 	bool isOpen() const;
 
 	void setBackgroundColor(const Color& color);
 	void setTitle(const char* title);
+
+	GLFWwindow* getGLFWWindow() { return m_Window; }
 private:
 
-	int m_ClearMode;
+	
+
 	GLFWwindow* m_Window;
 };

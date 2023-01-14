@@ -11,13 +11,16 @@ public:
 
 	struct ProfilerTask
 	{
+	public:
 		ProfilerTask(const char* name, const std::chrono::steady_clock::time_point& start) : name(name), start(start) {}
 
 		const char* name;
-		std::chrono::steady_clock::time_point start;
-		std::chrono::steady_clock::time_point end;
-
-		void computeTime()
+		/// <summary>
+		/// In seconds
+		/// </summary>
+		long long time;
+		
+		void computeTime(const std::chrono::steady_clock::time_point& end)
 		{
 			time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		}
@@ -27,10 +30,9 @@ public:
 			return std::string(name).append(": ").append(std::to_string(time));
 		}
 
-		/// <summary>
-		/// In seconds
-		/// </summary>
-		long long time;
+
+	private:
+		std::chrono::steady_clock::time_point start;
 	};
 
 	Profiler();

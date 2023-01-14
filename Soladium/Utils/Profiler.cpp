@@ -18,7 +18,6 @@ Profiler::ProfilerTask Profiler::end()
 	ProfilerTask temp(m_Tasks.top());
 	m_Tasks.pop();
 
-	temp.end = std::chrono::high_resolution_clock::now();
-	temp.computeTime();
+	temp.computeTime(std::chrono::high_resolution_clock::now());
 	return temp;
 }
