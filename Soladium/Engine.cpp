@@ -1,7 +1,11 @@
 #include "Engine.h"
-#include "Renderer/Camera.h"
+#include "Renderer/OrthographicCamera.h"
+#include "Renderer/ProjectionCamera.h"
 #include "Utils/Keyboard.h"
 #include "Utils/Mouse.h"
+
+
+
 Engine::Engine()
     //: m_MonoScript(new MonoScript())
 {
@@ -9,15 +13,17 @@ Engine::Engine()
 
     m_Window = new Window("Soladium", 1200, 720);
     m_Window->setBackgroundColor(Color((BYTE_8)0, (BYTE_8)0, (BYTE_8)0));
-
-
-   
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(m_Window->getGLFWWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 }
 
 Engine::~Engine()
 {
 	delete m_Window;
-    
 }
 
 void Engine::run()
@@ -39,7 +45,7 @@ void Engine::run()
         1, 2, 3
     };
     Vao vao(vertices, sizeof(vertices), indices, sizeof(indices), GL_TRIANGLES, 6);
-    Camera camera(glm::vec3(0, 0, 1), glm::radians(60.0f));
+    OrthographicCamera camera(glm::vec3(0, 0, 1), glm::radians(60.0f));
    
     float speed = 0.01f;
 
@@ -51,10 +57,16 @@ void Engine::run()
 
 
     Keyboard::setWindow(m_Window);
+    bool* b = new bool(true);
     while (m_Window->isOpen())
     {
         m_Window->pollEvents();
         m_Window->clear();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::ShowDemoWindow(b);
 
         deltaX -= Mouse::getMousePosition().x;
         deltaY -= Mouse::getMousePosition().y;
@@ -86,8 +98,8 @@ void Engine::run()
             camY = glm::radians(89.0f);
         }
 
-        camera.rotation = glm::mat4(1.0f);
-        camera.rotate(camY, camX, 0);
+        //camera.rotation = glm::mat4(1.0f);
+        //camera.rotate(camY, camX, 0);
 
 
 
@@ -96,7 +108,7 @@ void Engine::run()
         shader->uniform("u_Texture", 0);
         glm::mat4 trans(1.0f);
         trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-        trans = glm::rotate(trans, (GLfloat)glfwGetTime() * 0.1f, glm::vec3(1.0f, 1.0f, 1.0f));
+        //trans = glm::rotate(trans, (GLfloat)glfwGetTime() * 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
         shader->uniform("u_Transform", trans);
         shader->uniform("u_ProjView", camera.getProjection() * camera.getView());
@@ -107,6 +119,9 @@ void Engine::run()
         shader->unbind();
         texture->unbind();
 
+        ImGui::Render();
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         deltaX = Mouse::getMousePosition().x;
         deltaY = Mouse::getMousePosition().y;
@@ -117,7 +132,11 @@ void Engine::run()
 
 void Engine::close()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     m_Window->close();
+   
 }
 
 Engine& Engine::getInstance()

@@ -31,11 +31,6 @@ void Camera::setAspect(const float& aspect)
     m_aspect = aspect;
 }
 
-glm::mat4 Camera::getProjection() const
-{
-    return glm::perspective(m_fov, m_aspect, m_near, m_far);
-}
-
 glm::mat4 Camera::getView() const
 {
     return glm::lookAt(position, position + front, up);
