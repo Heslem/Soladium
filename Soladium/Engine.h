@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-
+#include "Scripting/MonoScript.h"
 
 #include "Renderer/Window.h"
 #include "Renderer/Shaders/Shader.h"
@@ -28,5 +28,5 @@ private:
 	// Engine things
 	Profiler m_Profiler;
 	Window* m_Window;
-	//MonoScript* m_MonoScript;
+	MonoScript* m_MonoScript;
 };

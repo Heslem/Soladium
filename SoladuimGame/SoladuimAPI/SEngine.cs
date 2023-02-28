@@ -9,7 +9,7 @@ namespace SoladuimAPI
 {
     public class SEngine
     {
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static void Close();
     }
 }

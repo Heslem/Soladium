@@ -3,6 +3,18 @@
 #include <iostream>
 #include "GLWrap.h"
 
+#pragma pack(1)
+struct TMono
+{
+public:
+	TMono(Profiler::ProfilerTask* p)
+		: time((int)p->time)
+	{
+		
+	}
+	int time;
+};
+
 static void print() {
 	std::cout << "PRINT YEEEAH" << std::endl;
 }
@@ -11,13 +23,34 @@ static void wrap_close() {
 }
 
 static void wrap_profiler_start(MonoString* name) {
-	auto& profiler = Engine::getInstance();
-	//profiler.start(mono_string_to_utf8(name));
+	auto& profiler = Engine::getInstance().getProfiler();
+	profiler.start(mono_string_to_utf8(name));
+} 
+
+static void wrap_profiler_end(TMono& obj) {
+	auto& profiler = Engine::getInstance().getProfiler();
+	auto* val = profiler.end();
+	std::cout << val->time << std::endl;
+	obj.time = val->time;
 }
 
-//static Profiler::ProfilerTask wrap_profiler_end() {
-//	return .end();
-//}
+
+
+#pragma pack(1)
+struct TestStruct
+{
+	int a;
+	int b;
+};
+
+static TestStruct* wrap_profiler_testStruct() {
+	auto* v = new TestStruct();
+	v->a = 10;
+	v->b = -10;
+
+	return v;
+}
+
 
 MonoScript::MonoScript()
 	: m_MonoDomain(nullptr), m_GameAssembly(nullptr), m_GameAssemblyImage(nullptr)
@@ -42,11 +75,13 @@ void MonoScript::init()
 
 			m_GameAssemblyImage = mono_assembly_get_image(m_GameAssembly);
 			if (m_GameAssemblyImage) {
-
+				
 				mono_add_internal_call("SoladuimAPI.Soladuim::Print", &print);
 				mono_add_internal_call("SoladuimAPI.SEngine::Close", &wrap_close);
 				mono_add_internal_call("SoladuimAPI.SProfiler::Start", &wrap_profiler_start);
-				//mono_add_internal_call("SoladuimAPI.SProfiler::End", &wrap_profiler_end);
+				
+				mono_add_internal_call("SoladuimAPI.SProfiler::End", &wrap_profiler_end);
+				mono_add_internal_call("SoladuimAPI.SProfiler::GetTest", &wrap_profiler_testStruct);
 				
 
 				GLWrap_wrap();

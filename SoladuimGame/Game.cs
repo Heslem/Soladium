@@ -9,19 +9,15 @@ namespace SoladuimGame
 {
     public class Game
     {
+        
+
         public static void Run()
         {
-            SProfiler.Start("YEAH");
-            for (int i = 0; i < 10; i++)
-            {
-                Console.WriteLine(i);
-            }
-            //Soladuim.Print();
-            //var task = SProfiler.End();
-            //Console.WriteLine(task.time);
+            Console.WriteLine("C# working.");
 
-            //FIX CLOSE
-            //SEngine.Close();
+            var t = SProfiler.GetTest();
+            Console.WriteLine(t.a);
+            Console.WriteLine(t.b);
         }
     }
 }

@@ -12,9 +12,8 @@ public:
 	struct ProfilerTask
 	{
 	public:
-		ProfilerTask(const char* name, const std::chrono::steady_clock::time_point& start) : name(name), start(start) {}
-
-		const char* name;
+		ProfilerTask(const char* name, const std::chrono::steady_clock::time_point& start) : start(start) {}
+		ProfilerTask(const ProfilerTask& copy) : time(copy.time) {}
 		/// <summary>
 		/// In seconds
 		/// </summary>
@@ -27,7 +26,7 @@ public:
 
 		const std::string toString() const
 		{
-			return std::string(name).append(": ").append(std::to_string(time));
+			return "";//std::string(name).append(": ").append(std::to_string(time));
 		}
 
 
@@ -40,7 +39,7 @@ public:
 	Profiler(const Profiler&) = delete;
 
 	void start(const char* name);
-	ProfilerTask end();
+	ProfilerTask* end();
 private:
-	std::stack<ProfilerTask> m_Tasks;
+	std::stack<ProfilerTask*> m_Tasks;
 };

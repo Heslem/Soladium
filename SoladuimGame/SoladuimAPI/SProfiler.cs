@@ -10,17 +10,31 @@ namespace SoladuimAPI
 {
     public static class SProfiler
     {
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct ProfilerTask
         {
-            public string name;
-            public ulong time;
+            public int time;
         }
 
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static void Start(string name);
+
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static ProfilerTask End();
+        public static extern void End(ref ProfilerTask task);
+
+
+
+
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct TestStruct
+        {
+            public int a;
+            public int b;
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern ref TestStruct GetTest();
     }
 }
