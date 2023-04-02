@@ -8,6 +8,9 @@
 #include "Utils/Profiler.h"
 #include "Renderer/Textures/Texture.h"
 #include "Renderer/VAO/Vao.h"
+#include "Renderer/Camera.h"
+#include "Renderer/ProjectionCamera.h"
+#include "Renderer/OrthographicCamera.h"
 
 
 class Engine sealed
@@ -24,6 +27,8 @@ public:
 	Profiler& getProfiler();
 private:
 	Engine();
+
+	Camera* m_camera;
 
 	// Engine things
 	Profiler m_Profiler;

@@ -21,20 +21,6 @@ namespace SoladuimAPI
         public extern static void Start(string name);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern void End(ref ProfilerTask task);
-
-
-
-
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct TestStruct
-        {
-            public int a;
-            public int b;
-        }
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern ref TestStruct GetTest();
+        public static extern ref ProfilerTask End();
     }
 }

@@ -7,7 +7,7 @@ void Keyboard::setWindow(Window* window)
 	m_window = window->getGLFWWindow();
 }
 
-int Keyboard::pressed(const int& keycode)
+bool Keyboard::pressed(int keycode)
 {
-	return glfwGetKey(m_window, keycode);
+	return (bool)glfwGetKey(m_window, keycode);
 }

@@ -13,11 +13,14 @@ namespace SoladuimGame
 
         public static void Run()
         {
-            Console.WriteLine("C# working.");
+            //Console.WriteLine("C# working.");
 
-            var t = SProfiler.GetTest();
-            Console.WriteLine(t.a);
-            Console.WriteLine(t.b);
+            //Console.WriteLine("0");
+            //var a = SProfiler.GetTest();
+            //Console.WriteLine("1");
+
+            //Console.WriteLine("SFSDF: " + a.a.ToString());
+            //Console.WriteLine(a.b);
         }
     }
 }

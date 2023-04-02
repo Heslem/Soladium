@@ -151,6 +151,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Component.cpp" />
+    <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\MonoComponent.cpp" />
     <ClCompile Include="Renderer\Camera.cpp" />
     <ClCompile Include="Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Renderer\ProjectionCamera.cpp" />
@@ -175,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Component.h" />
     <ClInclude Include="Engine\GameObject.h" />
+    <ClInclude Include="Engine\MonoComponent.h" />
     <ClInclude Include="Math\Color.h" />
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Math\Vector2.h" />
