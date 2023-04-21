@@ -29,12 +29,12 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_Id);
 }
 
-void Texture::bind()
+void Texture::bind() const
 {
 	glBindTexture(GL_TEXTURE_2D, m_Id);
 }
 
-void Texture::unbind()
+void Texture::unbind() const
 {
     glBindTexture(GL_TEXTURE_2D, 0);
 }

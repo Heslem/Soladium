@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "../Renderer/Window.h"
+#include "../renderer/Window.h"
 class Mouse {
 public:
 	static void setWindow(Window* window);

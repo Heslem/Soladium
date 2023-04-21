@@ -1,9 +1,9 @@
 ﻿#include "Engine.h"
 
+// TODO: project open by args
 int main(void)
 {
-
-    //auto m = mono_init("dd");
+    srand(time(NULL));
      
     Engine::getInstance().run();
 

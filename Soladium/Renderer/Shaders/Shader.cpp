@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-#include "../../Utils/FileUtils.h"
+#include "../../utils/FileUtils.h"
 
 Shader::Shader()
 	: m_ID(0)
@@ -14,21 +14,22 @@ Shader::~Shader()
 
 void Shader::loadFromFiles(const char* vertexFilename, const char* fragmentFilename)
 {
-	const char* vertexSource = readFile(vertexFilename).c_str();
-	const char* fragmentSource = readFile(fragmentFilename).c_str();
+	loadFromSource(readFile(vertexFilename).c_str(), readFile(fragmentFilename).c_str());
+}
 
+void Shader::loadFromSource(const char* vertexSource, const char* fragmentSource)
+{
 	GLuint vertexID = compileShader(GL_VERTEX_SHADER, vertexSource);
 	GLuint fragmentID = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
 
-	if (vertexID == -1 || fragmentID == -1) {
+	if (vertexID == -1 || fragmentID == -1)
 		return;
-	}
 
 	m_ID = glCreateProgram();
 	glAttachShader(m_ID, vertexID);
 	glAttachShader(m_ID, fragmentID);
 	glLinkProgram(m_ID);
-	
+
 	GLint success;
 	GLchar infoLog[512];
 	glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
@@ -55,17 +56,26 @@ void Shader::unbind()
 	glUseProgram(0);
 }
 
+void Shader::registerUniform(const char* name)
+{
+	GLint uniformId = getUniformLocation(name);
+	if (uniformId == -1)
+		std::cout << "Can't find shader uniform: " << name << std::endl;
+	else
+		m_cachedUniforms[name] = uniformId;
+}
+
 void Shader::uniform(const char* name, const int& value)
 {
-	glUniform1i(getUniformLocation(name), value);
+	glUniform1i(m_cachedUniforms[name], value);
 }
 
 void Shader::uniform(const char* name, const glm::mat4& value)
 {
-	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+	glUniformMatrix4fv(m_cachedUniforms[name], 1, GL_FALSE, glm::value_ptr(value));
 }
 
-int Shader::getUniformLocation(const char* name)
+GLint Shader::getUniformLocation(const char* name)
 {
 	return glGetUniformLocation(m_ID, name);
 }

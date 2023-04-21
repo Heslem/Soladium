@@ -1,44 +1,48 @@
 #include "Engine.h"
-#include "Utils/Keyboard.h"
-#include "Utils/Mouse.h"
+#include "utils/Keyboard.h"
+#include "utils/Mouse.h"
 
-
+#include <chrono>
+#include <time.h>
 
 Engine::Engine()
-    : m_Window(new Window("Soladuim", 1200, 720)), m_camera(new ProjectionCamera(glm::vec3(0, 0, 1), glm::radians(60.0f))),
-    m_MonoScript(new MonoScript())
+    : m_window(new Window("Soladuim", 1200, 720)), m_camera(new ProjectionCamera(glm::vec3(0, 0, 1), glm::radians(60.0f))),
+    m_monoScript(new MonoScript()), m_framerate(60.0)
 {
-    Mouse::setWindow(m_Window);
-    Keyboard::setWindow(m_Window);
+    Mouse::setWindow(m_window);
+    Keyboard::setWindow(m_window);
+
+    
+
+
+    temp_texture = new Texture("Content/Images/menu_background.png");
+    
+    temp_shader = new Shader();
+    temp_shader->loadFromFiles("Content/Shaders/base_vertex.shader", "Content/Shaders/base_fragment.shader");
+    temp_shader->registerUniform("u_Transform");
+    temp_shader->registerUniform("u_ProjView");
+
+    temp_sprite = new Sprite(*temp_texture);
+
+    m_spriteRenderer = new SpriteRenderer(temp_shader, *m_camera);
 }
 
 Engine::~Engine()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     delete m_camera;
-    delete m_MonoScript;
-	delete m_Window;
+    delete m_monoScript;
+	delete m_window;
+    delete temp_texture;
+    delete temp_shader;
+    delete m_spriteRenderer;
 }
 
 void Engine::run()
 {
-    Shader* shader = new Shader();
-    shader->loadFromFiles("Content/Shaders/base.vert", "Content/Shaders/base.frag");
-
-    Texture* texture = new Texture("Content/Images/menu_background.png");
-
-    GLfloat vertices[] = {
-        // Позиции          // Цвета             // Текстурные координаты
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Верхний правый
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Нижний правый
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Нижний левый
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Верхний левый
-    };
-    GLuint indices[] = {
-        0, 1, 3,
-        1, 2, 3
-    };
-    Vao vao(vertices, sizeof(vertices), indices, sizeof(indices), GL_TRIANGLES, 6);
-   
     float speed = 0.01f;
 
     float camX = 0.0f;
@@ -47,107 +51,60 @@ void Engine::run()
     float deltaY = Mouse::getMousePosition().y;
 
 
-    m_MonoScript->init();
-    auto* comp = m_MonoScript->createMonoComponent("TestComponent");
+    m_monoScript->init();
+    //auto* comp = m_MonoScript->createMonoComponent("TestComponent");
 
-    comp->start();
+    //comp->start();
 
     // TODO: add delta time
 
-    bool* b = new bool(true);
-    while (m_Window->isOpen())
+    while (m_window->isOpen())
     {
-        m_Window->pollEvents();
-        m_Window->clear();
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        ImGui::ShowDemoWindow(b);
-
-        //comp->update();
-
+        m_window->pollEvents();
+        update();
+        render();
         
-
-        deltaX -= Mouse::getMousePosition().x;
-        deltaY -= Mouse::getMousePosition().y;
-
         if (Keyboard::pressed(GLFW_KEY_ESCAPE)) {
             close();
         }
-        
-        if (Keyboard::pressed(GLFW_KEY_W)) {
-            m_camera->position += m_camera->front * speed;
-        }
-        if (Keyboard::pressed(GLFW_KEY_S)) {
-            m_camera->position -= m_camera->front * speed;
-        }
-        if (Keyboard::pressed(GLFW_KEY_D)) {
-            m_camera->position += m_camera->right * speed;
-        }
-        if (Keyboard::pressed(GLFW_KEY_A)) {
-            m_camera->position -= m_camera->right * speed;
-        }
-
-        camY += deltaY / 720 * 2;
-        camX += deltaX / 720 * 2;
-
-        if (camY < -glm::radians(89.0f)) {
-            camY = -glm::radians(89.0f);
-        }
-        if (camY > glm::radians(89.0f)) {
-            camY = glm::radians(89.0f);
-        }
-
-        m_camera->rotation = glm::mat4(1.0f);
-        m_camera->rotate(camY, camX, 0);
-
-
-
-        texture->bind();
-        shader->bind();
-        shader->uniform("u_Texture", 0);
-        glm::mat4 trans(1.0f);
-        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-        //trans = glm::rotate(trans, (GLfloat)glfwGetTime() * 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-
-        shader->uniform("u_Transform", trans);
-        shader->uniform("u_ProjView", m_camera->getProjection() * m_camera->getView());
-        vao.bind();
-        vao.draw();
-        vao.unbind();
-
-        shader->unbind();
-        texture->unbind();
-
-
-        ImGui::Render();
-
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        deltaX = Mouse::getMousePosition().x;
-        deltaY = Mouse::getMousePosition().y;
-
-        m_Window->display();
     }
+}
+
+void Engine::update()
+{
+
+}
+
+void Engine::render()
+{
+    m_window->clear();
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    temp_sprite->move(0.001f, 0);
+    m_spriteRenderer->draw(*temp_sprite);
+
+
+    ImGui::Render();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    m_window->display();
 }
 
 void Engine::close()
 {
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-    m_Window->close();
-   
+    m_window->close();
 }
 
 Engine& Engine::getInstance()
 {
-	static Engine engine;
-	return engine;
+    static Engine engine;
+    return engine;
 }
 
 Profiler& Engine::getProfiler()
 {
-    return m_Profiler;
+    return m_profiler;
 }

@@ -18,174 +18,180 @@
     <ClCompile Include="Soladium.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Window.cpp">
+    <ClCompile Include="renderer\Window.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Shaders\Shader.cpp">
+    <ClCompile Include="renderer\shaders\Shader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Profiler.cpp">
+    <ClCompile Include="utils\Profiler.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Textures\Texture.cpp">
+    <ClCompile Include="renderer\textures\Texture.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\VAO\Vao.cpp">
+    <ClCompile Include="renderer\VAO\Vao.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Scripting\MonoScript.cpp">
+    <ClCompile Include="scripting\MonoScript.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Camera.cpp">
+    <ClCompile Include="renderer\Camera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Keyboard.cpp">
+    <ClCompile Include="utils\Keyboard.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\Mouse.cpp">
+    <ClCompile Include="utils\Mouse.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\ProjectionCamera.cpp">
+    <ClCompile Include="renderer\ProjectionCamera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\OrthographicCamera.cpp">
+    <ClCompile Include="renderer\OrthographicCamera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui.cpp">
+    <ClCompile Include="ui\imgui.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui_demo.cpp">
+    <ClCompile Include="ui\imgui_demo.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui_draw.cpp">
+    <ClCompile Include="ui\imgui_draw.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui_impl_glfw.cpp">
+    <ClCompile Include="ui\imgui_impl_glfw.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui_impl_opengl3.cpp">
+    <ClCompile Include="ui\imgui_impl_opengl3.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui_tables.cpp">
+    <ClCompile Include="ui\imgui_tables.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui_widgets.cpp">
+    <ClCompile Include="ui\imgui_widgets.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\MonoComponent.cpp">
+    <ClCompile Include="core\MonoComponent.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component.cpp">
+    <ClCompile Include="core\Component.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject.cpp">
+    <ClCompile Include="core\GameObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\SpriteRenderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\Sprite.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer\Window.h">
+    <ClInclude Include="renderer\Window.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector2.h">
+    <ClInclude Include="math\Vector2.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Shaders\Shader.h">
+    <ClInclude Include="renderer\shaders\Shader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Textures\Texture.h">
+    <ClInclude Include="renderer\textures\Texture.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\VAO\VertexArray.h">
+    <ClInclude Include="renderer\VAO\Vertex.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\VAO\Vertex.h">
+    <ClInclude Include="math\Color.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Color.h">
+    <ClInclude Include="math\Vector3.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector3.h">
+    <ClInclude Include="utils\FileUtils.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\FileUtils.h">
+    <ClInclude Include="core\GameObject.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject.h">
+    <ClInclude Include="core\Component.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component.h">
+    <ClInclude Include="math\Transform.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Transform.h">
+    <ClInclude Include="utils\Profiler.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Profiler.h">
+    <ClInclude Include="renderer\textures\stb_image.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Textures\stb_image.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\VAO\Vao.h">
+    <ClInclude Include="renderer\VAO\Vao.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\MonoScript.h">
+    <ClInclude Include="scripting\MonoScript.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\GLWrap.h">
+    <ClInclude Include="scripting\GLWrap.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Camera.h">
+    <ClInclude Include="renderer\Camera.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Keyboard.h">
+    <ClInclude Include="utils\Keyboard.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Mouse.h">
+    <ClInclude Include="utils\Mouse.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Models\Vertex.h">
+    <ClInclude Include="renderer\OrthographicCamera.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\OrthographicCamera.h">
+    <ClInclude Include="renderer\ProjectionCamera.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\ProjectionCamera.h">
+    <ClInclude Include="ui\imstb_truetype.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imstb_truetype.h">
+    <ClInclude Include="ui\imconfig.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imconfig.h">
+    <ClInclude Include="ui\imgui.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imgui.h">
+    <ClInclude Include="ui\imgui_impl_glfw.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imgui_impl_glfw.h">
+    <ClInclude Include="ui\imgui_impl_opengl3.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imgui_impl_opengl3.h">
+    <ClInclude Include="ui\imgui_impl_opengl3_loader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imgui_impl_opengl3_loader.h">
+    <ClInclude Include="ui\imgui_internal.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imgui_internal.h">
+    <ClInclude Include="ui\imstb_rectpack.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imstb_rectpack.h">
+    <ClInclude Include="ui\imstb_textedit.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UI\imstb_textedit.h">
+    <ClInclude Include="core\MonoComponent.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\MonoComponent.h">
+    <ClInclude Include="renderer\SpriteRenderer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\Sprite.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

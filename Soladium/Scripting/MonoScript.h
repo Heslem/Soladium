@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "../Engine/MonoComponent.h"
+#include "../core/MonoComponent.h"
 
 class MonoScript sealed
 {

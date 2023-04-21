@@ -7,7 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// TODO: cache uniforms of shader.
+#include <unordered_map>
 
 class Shader
 {
@@ -17,15 +17,20 @@ public:
 	~Shader();
 
 	void loadFromFiles(const char* vertexFilename, const char* fragmentFilename);
+	void loadFromSource(const char* vertexSource, const char* fragmentSource);
 
 	void bind();
 	void unbind();
 
+	void registerUniform(const char* name);
+
 	void uniform(const char* name, const int& value);
 	void uniform(const char* name, const glm::mat4& value);
 
-	int getUniformLocation(const char* name);
+	GLint getUniformLocation(const char* name);
 private:
+	std::unordered_map<const char*, GLint> m_cachedUniforms;
+
 	GLuint compileShader(const GLint& type, const GLchar* source);
 
 	GLuint m_ID;

@@ -11,8 +11,8 @@
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
-#include "../Math/Color.h"
-#include "../Math/Vector2.h"
+#include "../math/Color.h"
+#include "../math/Vector2.h"
 
 class Window
 {

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoladuimAPI\GameObject.cs" />
     <Compile Include="SoladuimAPI\SAssetsManager.cs" />
     <Compile Include="SoladuimAPI\SEngine.cs" />
     <Compile Include="SoladuimAPI\SKeyboard.cs" />

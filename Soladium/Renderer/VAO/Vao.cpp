@@ -1,6 +1,6 @@
 #include "Vao.h"
 
-Vao::Vao(GLfloat* vertices, const unsigned long long& vSize, GLuint* indices, const unsigned long long& iSize, const GLenum& mode, const GLsizei& count)
+Vao::Vao(GLfloat* vertices, unsigned long long vSize, GLuint* indices, unsigned long long iSize, const GLenum& mode, const GLsizei& count)
 	: m_Mode(mode), m_Count(count)
 {
     glGenVertexArrays(1, &VAO);

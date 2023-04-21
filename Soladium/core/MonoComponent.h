@@ -5,9 +5,6 @@
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 
-//https://www.mono-project.com/docs/advanced/embedding/
-// See here creating object section.
-
 class MonoComponent sealed
 	: public Component
 {

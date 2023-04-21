@@ -5,7 +5,7 @@
 class Vao sealed
 {
 public:
-	Vao(GLfloat* vertices, const unsigned long long& vSize, GLuint* indices, const unsigned long long& iSize, const GLenum& mode, const GLsizei& count);
+	Vao(GLfloat* vertices, unsigned long long vSize, GLuint* indices, unsigned long long iSize, const GLenum& mode, const GLsizei& count);
 	~Vao();
 
 	void draw();

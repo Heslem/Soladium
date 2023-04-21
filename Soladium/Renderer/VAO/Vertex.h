@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Math/Vector2.h"
-#include "../../Math/Vector3.h"
-#include "../../Math/Color.h"
+#include "../../math/Vector2.h"
+#include "../../math/Vector3.h"
+#include "../../math/Color.h"
 
 struct Vertex
 {

@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-
+// I don't know, but i think delete it.
 
 
 static void GLWrap_wrap()

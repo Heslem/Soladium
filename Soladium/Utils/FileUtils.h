@@ -2,19 +2,15 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include <fstream>
 #include <streambuf>
+#include <sstream>
+
 
 static std::string readFile(const char* path) {
-   
-    std::ifstream t(path);
-    std::string str;
-
-    t.seekg(0, std::ios::end);
-    str.reserve(t.tellg());
-    t.seekg(0, std::ios::beg);
-
-    str.assign((std::istreambuf_iterator<char>(t)),
-        std::istreambuf_iterator<char>());
-    return str;
+    std::ifstream input_file(path);
+    if (!input_file.is_open()) {
+        std::cout << "Could not open the file - '" << path << "'" << std::endl;
+        return std::string("");
+    }
+    return std::string((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
 }

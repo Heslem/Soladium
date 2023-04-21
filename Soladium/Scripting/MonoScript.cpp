@@ -3,7 +3,7 @@
 #include <iostream>
 #include "GLWrap.h"
 
-#include "../Utils/Keyboard.h"
+#include "../utils/Keyboard.h"
 
 
 // TODO: delete

@@ -11,8 +11,8 @@ public:
 	Texture(const char* path);
 	~Texture();
 
-	void bind();
-	void unbind();
+	void bind() const;
+	void unbind() const;
 
 private:
 	GLuint m_Id;
