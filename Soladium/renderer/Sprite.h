@@ -5,19 +5,18 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class Sprite sealed
+struct Sprite sealed
 {
 public:
-	Sprite(const Texture& texture);
+	Sprite(const Texture& texture, const glm::mat4& transform);
 	~Sprite();
 
 	const Texture& getTexture() const noexcept { return m_texture; }
 	const glm::mat4& getTransform() const noexcept { return m_transform; }
 
-	void move(const float& x, const float& y);
-	void scale(const float& x, const float& y);
+	
 private:
 	const Texture& m_texture;
-	glm::mat4 m_transform;
+	const glm::mat4& m_transform;
 
 };

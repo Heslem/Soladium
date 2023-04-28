@@ -38,6 +38,7 @@ Window::Window(const char* title, const int& width, const int& height)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); 
+    glfwSwapInterval(1);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

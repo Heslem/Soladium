@@ -9,18 +9,26 @@ namespace SoladuimGame
 {
     public class TestComponent
     {
-        public void Start()
+        private GameObject _gameObject;
+
+        public void Start(ref GameObject gameObject)
         {
+            _gameObject = gameObject; 
             Console.WriteLine("Start");
         }
 
         public void Update()
         {
-            
-            if (SKeyboard.IsKeyPressed(SKeyboard.Keys.G))
-            {
-                Console.WriteLine("Working");
-            }
+            float _speed = 0.001f;
+            if (SKeyboard.IsKeyPressed(SKeyboard.Keys.A))
+                _gameObject.Move(-_speed, 0);
+            if (SKeyboard.IsKeyPressed(SKeyboard.Keys.D))
+                _gameObject.Move(_speed, 0);
+            if (SKeyboard.IsKeyPressed(SKeyboard.Keys.W))
+                _gameObject.Move(0, _speed);
+            if (SKeyboard.IsKeyPressed(SKeyboard.Keys.S))
+                _gameObject.Move(0, -_speed);
+
         }
     }
 }

@@ -1,7 +1,11 @@
 #include "MonoComponent.h"
 
-MonoComponent::MonoComponent(BaseMonoComponentData data, MonoObject* object)
-	: m_data(data), m_object(object)
+#include <iostream>
+#include "../scripting/ScriptClass.h"
+#include "../scripting/ScriptEngine.h"
+
+MonoComponent::MonoComponent(ScriptClass& scriptClass, MonoObject* object)
+	: Component(scriptClass.getName().c_str()), m_scriptClass(scriptClass), m_object(object)
 	
 {
 }
@@ -12,10 +16,28 @@ MonoComponent::~MonoComponent()
 
 void MonoComponent::start()
 {
-	mono_runtime_invoke(m_data.startMethod, m_object, nullptr, NULL);
+	auto& engineScript = ScriptEngine::getInstance();
+	auto* gameObjectClass = engineScript.getClass("GameObject");
+	
+	std::cout << "Create game object" << std::endl;
+
+	auto* monoGameObject = gameObjectClass->instantiate();
+	
+	if (!monoGameObject)
+		std::cout << "Mono object is null." << std::endl;
+
+	void* argsCtor[1];
+	argsCtor[0] = &m_gameObject;
+
+	gameObjectClass->constructor(monoGameObject, argsCtor);
+
+	void* args[1];
+	args[0] = &monoGameObject;
+
+	m_scriptClass.invoke(m_object, "Start", args);
 }
 
 void MonoComponent::update()
 {
-	mono_runtime_invoke(m_data.updateMethod, m_object, nullptr, NULL);
+	m_scriptClass.invoke(m_object, "Update");
 }

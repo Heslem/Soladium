@@ -19,15 +19,15 @@ public:
 	void loadFromFiles(const char* vertexFilename, const char* fragmentFilename);
 	void loadFromSource(const char* vertexSource, const char* fragmentSource);
 
-	void bind();
-	void unbind();
+	void bind() const;
+	void unbind() const;
 
 	void registerUniform(const char* name);
 
 	void uniform(const char* name, const int& value);
 	void uniform(const char* name, const glm::mat4& value);
 
-	GLint getUniformLocation(const char* name);
+	GLint getUniformLocation(const char* name) const;
 private:
 	std::unordered_map<const char*, GLint> m_cachedUniforms;
 

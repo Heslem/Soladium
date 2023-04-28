@@ -6,22 +6,29 @@ namespace SoladuimAPI
 {
     public class GameObject
     {
-        private IntPtr _intPtr;
+        public IntPtr _intPtr;
 
         public GameObject(IntPtr intPtr)
         {
             _intPtr = intPtr;
-
         }
 
-        public void Move(float x, float y)
+        public void Move(in float x, in float y)
         {
-            s_move(_intPtr, x, y);
+            s_move(x, y, _intPtr);
         }
 
+        public void Destroy()
+        {
+            s_destroy(_intPtr);
+        }
 
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private extern static void s_move(IntPtr ptr, float x, float y);
+        private extern static void s_move(float x, float y, IntPtr ptr);
+
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        private extern static void s_destroy(IntPtr ptr);
     }
 }

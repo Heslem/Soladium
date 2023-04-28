@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 
-#include "scripting/MonoScript.h"
-
 #include "renderer/Window.h"
 #include "renderer/shaders/Shader.h"
 #include "utils/Profiler.h"
@@ -11,6 +9,10 @@
 #include "renderer/OrthographicCamera.h"
 #include "renderer/SpriteRenderer.h"
 #include "renderer/Sprite.h"
+
+#include "core/scenes/Scene.h"
+
+#include "scripting/ScriptEngine.h"
 
 
 class Engine sealed
@@ -36,8 +38,9 @@ private:
 
 	Texture* temp_texture;
 	Shader* temp_shader;
-	Sprite* temp_sprite;
-
+	GameObject* test;
+	// TODO: make scene manager
+	Scene* m_scene;
 	SpriteRenderer* m_spriteRenderer;
 	Camera* m_camera;
 
@@ -45,5 +48,4 @@ private:
 	// Engine things
 	Profiler m_profiler;
 	Window* m_window;
-	MonoScript* m_monoScript;
 };

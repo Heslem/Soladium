@@ -46,12 +46,12 @@ void Shader::loadFromSource(const char* vertexSource, const char* fragmentSource
 	glDeleteShader(fragmentID);
 }
 
-void Shader::bind()
+void Shader::bind() const
 {
 	glUseProgram(m_ID);
 }
 
-void Shader::unbind()
+void Shader::unbind() const
 {
 	glUseProgram(0);
 }
@@ -75,8 +75,8 @@ void Shader::uniform(const char* name, const glm::mat4& value)
 	glUniformMatrix4fv(m_cachedUniforms[name], 1, GL_FALSE, glm::value_ptr(value));
 }
 
-GLint Shader::getUniformLocation(const char* name)
-{
+GLint Shader::getUniformLocation(const char* name) const
+{ 
 	return glGetUniformLocation(m_ID, name);
 }
 
