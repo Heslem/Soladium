@@ -1,40 +1,30 @@
 #pragma once
-
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
+#include "../utils/Singleton.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
-
-#include "../math/Color.h"
-#include "../math/Vector2.h"
-
-class Window
+namespace renderer
 {
-public:
-	Window(const char* title, const int& width, const int& height);
-	~Window();
-	Window(const Window&) = delete;
+	class Window sealed
+	{
+		SINGLETON(Window)
 
-	void pollEvents();
-	void clear();
-	void display();
-	void close();
+			GLFWwindow* m_glfwWindow;
+	public:
+		void initialize(const char* title, const int& width, const int& height);
+		void setVsync(const bool& value);
+		void setCursorVisible(const bool& value);
+		void setResizeable(const bool& value);
+		void setTitle(const char* title);
 
-	bool isOpen() const;
+		void pollEvents();
+		void clear();
+		void display();
+		void close();
 
-	void setBackgroundColor(const Color& color);
-	void setTitle(const char* title);
+		bool isOpen() const;
 
-	GLFWwindow* getGLFWWindow() { return m_Window; }
-private:
-
-	
-
-	GLFWwindow* m_Window;
-};
+		GLFWwindow* getGlfwWindow() { return m_glfwWindow; }
+	};
+}

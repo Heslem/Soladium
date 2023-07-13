@@ -1,10 +1,10 @@
 #include "Sprite.h"
 
-Sprite::Sprite(const Texture& texture, const glm::mat4& transform)
-	: m_texture(texture), m_transform(transform)
+renderer::Sprite::Sprite(const glm::mat4& transform, Texture* texture)
+	: transform(transform), texture(texture)
 {
 }
 
-Sprite::~Sprite()
+renderer::Sprite::~Sprite()
 {
 }

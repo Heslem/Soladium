@@ -1,129 +1,109 @@
 #include "Engine.h"
-#include "utils/Keyboard.h"
-#include "utils/Mouse.h"
 
-#include <chrono>
-#include <time.h>
-#include "core/SpriteRendererComponent.h"
+#include "utils/Log.h"
+#include "renderer/Window.h"
+#include "core/GameObject.h"
+#include "core/components/TransformComponent.h"
+#include "core/components/SpriteComponent.h"
+#include "utils/VaoGenerator.h"
+#include "script/ScriptEngine.h"
+#include "core/components/MonoComponent.h"
+#include "utils/Profiler.h"
+
+float Engine::m_deltaTime;
 
 Engine::Engine()
-    : m_window(new Window("Soladuim", 1200, 720)), m_camera(new ProjectionCamera(glm::vec3(0, 0, 1), glm::radians(60.0f))),
-    m_framerate(60.0)
 {
-    Mouse::setWindow(m_window);
-    Keyboard::setWindow(m_window);
-    
 }
 
 Engine::~Engine()
 {
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    delete m_camera;
-	delete m_window;
-    delete temp_texture;
-    delete temp_shader;
-    delete m_spriteRenderer;
 }
 
 void Engine::run()
 {
-    float speed = 0.01f;
+    Log::init();
+    renderer::Window& window = renderer::Window::getInstance();
+    window.initialize("Soladium Engine 1.0.", 1200, 720);
+    window.setVsync(true);
 
-    float camX = 0.0f;
-    float camY = 0.0f;
-    float deltaX = Mouse::getMousePosition().x;
-    float deltaY = Mouse::getMousePosition().y;
+    Mouse::init();
+    Keyboard::init();
 
-    temp_texture = new Texture("Content/Images/menu_background.png");
+    m_shader = new renderer::Shader();
+    m_shader->loadFromFiles("Content/Shaders/base_vertex.shader", "Content/Shaders/base_fragment.shader");
+    m_shader->registerUniform("u_Transform");
+    m_shader->registerUniform("u_ProjView");
 
-    temp_shader = new Shader();
-    temp_shader->loadFromFiles("Content/Shaders/base_vertex.shader", "Content/Shaders/base_fragment.shader");
-    temp_shader->registerUniform("u_Transform");
-    temp_shader->registerUniform("u_ProjView");
+    m_texture = new renderer::Texture("Content/Images/menu_background.png");
 
+    m_camera = new renderer::ProjectionCamera(glm::vec3(0, 0, 1), 60.0f);
+    m_spriteRenderer = new renderer::SpriteRenderer();
+    m_spriteRenderer->setShader(m_shader);
+    m_spriteRenderer->setCamera(m_camera);
 
-    m_spriteRenderer = new SpriteRenderer(temp_shader, *m_camera);
+    m_state = new core::State("game");
 
-    m_scene = new Scene();
+    auto& scriptEngine = script::ScriptEngine::getInstance();
+    scriptEngine.init();
+    scriptEngine.registerClass("ExampleComponent");
 
-    ScriptEngine::getInstance().init();
+    //for (size_t i = 0; i < 1; i++)
+    //{
+        core::GameObject* object = new core::GameObject("go");
+        auto* transformComp = new core::component::TransformComponent();
+        object->addComponent(transformComp);
+        auto* sprite = new renderer::Sprite(transformComp->getTransform(), m_texture);
+        object->addComponent(new core::component::SpriteComponent(sprite));
 
+        core::component::MonoComponent* monoComponent = scriptEngine.createMonoComponent("ExampleComponent");
+        monoComponent->setGameObject(object);
 
-    test = new GameObject();
-    test->addComponent(new SpriteRendererComponent(*temp_texture, *m_spriteRenderer));
-    test->addComponent(ScriptEngine::getInstance().createMonoComponent("TestComponent"));
+        object->addComponent(monoComponent);
 
-    std::cout << "add object to scene\n";
-    m_scene->addGameObject(test);
+        m_state->instantiate(object);
+   // }
 
-    double currentTime = glfwGetTime();
-    double lastTime = 0;
+    m_state->run();
+    m_state->begin();
+    double previous = glfwGetTime();
+    double lag = 0.0;
 
-    double elapsed = 0;
+    Profiler& profiler = Profiler::getInstance();
 
-    while (m_window->isOpen())
+    while (window.isOpen())
     {
-        elapsed += currentTime - lastTime;
+        double current = glfwGetTime();
+        m_deltaTime = current - previous;
+        previous = current;
+        lag += m_deltaTime;
 
-        m_window->pollEvents();
-        
-        if (elapsed > 1.0 / m_framerate) {
-            update();
-            elapsed = 0.0;
+
+        while (lag >= 1.0 / 60.0)
+        {
+            window.pollEvents();
+
+            m_state->update();
+            lag -= 1.0 / 60.0;
         }
 
-        render();
-        
-        if (Keyboard::pressed(GLFW_KEY_ESCAPE)) {
-            close();
-        }
+       
+        window.clear();
 
-        lastTime = currentTime;
-        currentTime = glfwGetTime();
+        //profiler.begin("renderer");
+        m_spriteRenderer->render();
+        //std::cout << profiler.end().getInMilliseconds() << " ms\n";
+
+        window.display();
     }
-}
-
-void Engine::update()
-{
-    static bool temp = false;
-    if (!temp && Keyboard::pressed(GLFW_KEY_G)) {
-        //test->destroy();
-        temp = true;
-    }
-
-    m_scene->update();
-}
-
-void Engine::render()
-{
-    m_window->clear();
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    m_spriteRenderer->draw();
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    m_window->display();
+    m_state->end();
 }
 
 void Engine::close()
 {
-    m_window->close();
-}
+    renderer::Window::getInstance().close();
 
-Engine& Engine::getInstance()
-{
-    static Engine engine;
-    return engine;
-}
-
-Profiler& Engine::getProfiler()
-{
-    return m_profiler;
+    delete m_shader;
+    delete m_texture;
+    delete m_camera;
 }

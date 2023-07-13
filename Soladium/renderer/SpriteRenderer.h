@@ -1,42 +1,45 @@
 #pragma once
+
 #include <vector>
-#include "VAO/Vao.h"
 #include "Sprite.h"
 #include "shaders/Shader.h"
-#include "Camera.h"
+#include "cameras/Camera.h"
 
-// TODO: id to each sprite bad solution. Change.
-
-class SpriteRenderer sealed
+namespace renderer
 {
-private:
-	struct RendererSprite
+	class SpriteRenderer sealed
 	{
-		RendererSprite(Sprite* s, const size_t& i) : sprite(s), id(i) {}
+		SpriteRenderer(const SpriteRenderer&) = delete;
 
-		Sprite* sprite;
-		size_t id;
+		struct rendererSprite
+		{
+			rendererSprite(Sprite* s, const size_t& i) : sprite(s), id(i) {}
+
+			Sprite* sprite;
+			const size_t id;
+		}; 
+
+		std::vector<rendererSprite*> m_sprites;
+		Shader* m_shader;
+		Camera* m_camera;
+
+		Vao* m_vao;
+
+		void render(const Sprite& sprite);
+	public:
+		SpriteRenderer();
+		~SpriteRenderer();
+
+		/// <summary>
+		/// Добавляет спрайт к рендеру, возвращая ID.
+		/// </summary>
+		size_t add(Sprite* sprite);
+
+		void remove(const size_t& id);
+		
+		void render();
+
+		void setShader(Shader* shader);
+		void setCamera(Camera* camera);
 	};
-public:
-	SpriteRenderer(Shader* shader, Camera& camera);
-	~SpriteRenderer();
-
-
-	void draw();
-
-	/// <summary>
-	/// Returns id that need to remove
-	/// </summary>
-	size_t add(Sprite* sprite);
-	void remove(const size_t& id);
-private:
-
-	void draw(const Sprite& sprite);
-	void draw(const RendererSprite& sprite);
-	// sprites to render
-	std::vector<RendererSprite> m_sprites;
-
-	Vao* m_vao;
-	Shader* m_shader;
-	Camera& m_camera;
-};
+}

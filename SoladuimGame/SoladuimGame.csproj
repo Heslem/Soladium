@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Soladium\</OutputPath>
+    <OutputPath>..\x64\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -46,13 +46,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoladuimAPI\GameObject.cs" />
     <Compile Include="SoladuimAPI\SAssetsManager.cs" />
+    <Compile Include="SoladuimAPI\SComponent.cs" />
     <Compile Include="SoladuimAPI\SEngine.cs" />
     <Compile Include="SoladuimAPI\SKeyboard.cs" />
     <Compile Include="SoladuimAPI\SMouse.cs" />
     <Compile Include="SoladuimAPI\Soladuim.cs" />
     <Compile Include="SoladuimAPI\SProfiler.cs" />
     <Compile Include="SoladuimAPI\SRender.cs" />
-    <Compile Include="TestComponent.cs" />
+    <Compile Include="ExampleComponent.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

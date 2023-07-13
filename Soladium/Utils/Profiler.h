@@ -1,45 +1,43 @@
 #pragma once
-
+#include "Singleton.h"
 #include <stack>
-#include <chrono>
-#include <string>
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+// Профайлер не идеален!
 
 class Profiler sealed
 {
-public:
+	SINGLETON(Profiler)
 
-	struct ProfilerTask
+public:
+	class Task sealed
 	{
 	public:
-		ProfilerTask(const char* name, const std::chrono::steady_clock::time_point& start) : start(start) {}
-		ProfilerTask(const ProfilerTask& copy) : time(copy.time) {}
-		/// <summary>
-		/// In seconds
-		/// </summary>
-		long long time;
+		Task(const char* name, const double& start)
+			: m_name(name), m_start(start), m_end(0.0), m_elapsed(0.0) {}
+		~Task() = default;
+
+		void end(const double& end) { m_end = end; m_elapsed = m_end - m_start; }
 		
-		void computeTime(const std::chrono::steady_clock::time_point& end)
-		{
-			time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-		}
-
-		const std::string toString() const
-		{
-			return "";//std::string(name).append(": ").append(std::to_string(time));
-		}
-
+		double getInSeconds() const { return m_elapsed; }
+		double getInMilliseconds() const { return m_elapsed * 1000.0; }
+		double getInMicroseconds() const { return m_elapsed * 1000000.0; }
 
 	private:
-		std::chrono::steady_clock::time_point start;
+		const char* m_name;
+		double m_start;
+		double m_end;
+
+		double m_elapsed;
 	};
 
-	Profiler();
-	~Profiler();
-	Profiler(const Profiler&) = delete;
-
-	void start(const char* name);
-	ProfilerTask* end();
 private:
-	std::stack<ProfilerTask*> m_Tasks;
+
+	std::stack<Task> m_tasks;
+public:
+	
+	void begin(const char* name);
+	Task end();
 };

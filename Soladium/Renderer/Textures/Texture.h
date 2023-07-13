@@ -1,24 +1,28 @@
 #pragma once
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-
-
-class Texture sealed
+namespace renderer
 {
-public:
-	Texture(const char* path);
-	~Texture();
+	class Texture sealed
+	{
+		Texture(const Texture&) = delete;
+		void operator=(const Texture&) = delete;
 
-	void bind() const;
-	void unbind() const;
+		GLuint m_id;
 
-private:
-	GLuint m_Id;
+		int m_width;
+		int m_height;
+		unsigned char* m_pixels;
+		int m_bpp;
+	public:
+		Texture(const char* path);
+		~Texture();
 
-	int m_Width;
-	int m_Height;
-	unsigned char* m_Pixels;
-	int m_Bpp;
-};
+		void bind() const;
+		void unbind() const;
+
+		const int& getWidth() const noexcept { return m_width; }
+		const int& getHeight() const noexcept { return m_height; }
+	};
+}

@@ -1,38 +1,38 @@
 #pragma once
 
-#include "Component.h"
 #include <vector>
+#include "Component.h"
 
-class GameObject sealed
+namespace core
 {
-public:
-	GameObject();
-	~GameObject();
-	
-	void start();
-	void update();
-
-	void addComponent(Component* component);
-	
-	template<typename T>
-	T* getComponent(const char* name);
-
-	void destroy() { m_isDestroyed = true; }
-	const bool& isDestroyed() const noexcept { return m_isDestroyed; }
-private:
-	std::vector<Component*> m_components;
-
-	bool m_isDestroyed;
-};
-
-template<typename T>
-inline T* GameObject::getComponent(const char* name)
-{
-	for (size_t i = 0; i < m_components.size(); ++i)
+	class GameObject sealed
 	{
-		if (m_components[i]->getName() == name)
-			return static_cast<T*>(m_components[i]);
-	}
-	
-	return nullptr;
+		std::vector<Component*> m_components;
+		const char* m_name;
+	public:
+		GameObject(const char* name);
+		~GameObject();
+
+		void addComponent(Component* component);
+		
+		template<class T>
+		T* getComponent(const char* name)
+		{
+			// TODO: можно определять компонент не по name, а по <T>
+			for (size_t i = 0; i < m_components.size(); ++i)
+			{
+				// TODO: dynamic_cast может быть небезопасным
+				if (m_components[i]->getName() == name)
+					return dynamic_cast<T*>(m_components[i]);
+			}
+			return nullptr;
+		}
+		void removeComponent(const char* name);
+
+		void begin();
+		void update();
+		void end();
+
+		const char* getName() const noexcept { return m_name; }
+	};
 }

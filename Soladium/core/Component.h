@@ -1,23 +1,30 @@
 #pragma once
 
-class GameObject;
-
-class Component
+namespace core
 {
-public:
-	Component(const char* name);
-	virtual ~Component();
-	Component(const Component&) = delete;
+	class GameObject;
+	class Component
+	{
+		Component(const Component&) = delete;
+		const char* m_name;
 
-	virtual void start() = 0;
-	virtual void update() = 0;
-	virtual void end() {}
+	protected:
+		//TODO: компонент следует определять через <T> 
+		Component(const char* name);
 
-	void setGameObject(GameObject* object);
+		GameObject* m_gameObject;
 
-	const char* getName() const noexcept { return m_name; }
-protected:
-	const char* m_name;
 
-	GameObject* m_gameObject;
-};
+	public:
+		virtual ~Component() = default;
+
+		virtual void begin() = 0;
+		virtual void update() = 0;
+		virtual void end() = 0;
+
+		const char* getName() const noexcept { return m_name; }
+
+		void setGameObject(GameObject* gameObject) { m_gameObject = gameObject; }
+		GameObject* getGameObject() { return m_gameObject; }
+	};
+}

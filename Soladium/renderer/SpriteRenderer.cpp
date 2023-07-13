@@ -1,79 +1,71 @@
 #include "SpriteRenderer.h"
+#include "../utils/VaoGenerator.h"
 
-SpriteRenderer::SpriteRenderer(Shader* shader, Camera& camera)
-    : m_shader(shader), m_camera(camera)
+#include "../utils/Profiler.h"
+#include <iostream>
+
+void renderer::SpriteRenderer::render(const Sprite& sprite)
 {
-    GLfloat vertices[] = {
-        // Позиции          // Цвета             // Текстурные координаты
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Верхний правый
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Нижний правый
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Нижний левый
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Верхний левый
-    };
-    GLuint indices[] = {
-        0, 1, 3,
-        1, 2, 3
-    };
+    sprite.texture->bind();
+    m_shader->uniform("u_Transform", sprite.transform);
 
-    m_vao = new Vao(vertices, sizeof(vertices), indices, sizeof(indices), GL_TRIANGLES, 6);
+    m_vao->render();
+
+    sprite.texture->unbind();
 }
 
-SpriteRenderer::~SpriteRenderer()
+renderer::SpriteRenderer::SpriteRenderer()
+{
+    m_vao = VaoGenerator::generateSquare();
+}
+
+renderer::SpriteRenderer::~SpriteRenderer()
 {
     delete m_vao;
 }
 
-
-
-void SpriteRenderer::draw()
+size_t renderer::SpriteRenderer::add(Sprite* sprite)
 {
-    m_shader->bind();
-    m_shader->uniform("u_ProjView", m_camera.getProjection() * m_camera.getView());
-
-    for (size_t i = 0; i < m_sprites.size(); ++i)
-    {
-        draw(m_sprites[i]);
-    }
-
-    m_shader->unbind();
-}
-
-
-size_t SpriteRenderer::add(Sprite* sprite)
-{
+    // TODO: плохой вариант счётчика
     static size_t counter = 0;
+    m_sprites.push_back(new rendererSprite(sprite, counter));
     counter++;
-
-    m_sprites.push_back(RendererSprite(sprite, counter));
     return counter;
 }
 
-void SpriteRenderer::remove(const size_t& id)
+void renderer::SpriteRenderer::remove(const size_t& id)
 {
     for (size_t i = 0; i < m_sprites.size(); ++i)
     {
-        if (m_sprites[i].id == id)
+        if (m_sprites[i]->id == id)
         {
             m_sprites.erase(m_sprites.begin() + i);
+            break;
         }
     }
 }
 
-void SpriteRenderer::draw(const RendererSprite& sprite)
+void renderer::SpriteRenderer::render()
 {
-    draw(*sprite.sprite);
-}
-
-void SpriteRenderer::draw(const Sprite& sprite)
-{
-    sprite.getTexture().bind();
-
-    m_shader->uniform("u_Transform", sprite.getTransform());
+    m_shader->bind();
+    m_shader->uniform("u_ProjView", m_camera->getProjection() * m_camera->getView());
 
     m_vao->bind();
-    m_vao->draw();
+    for (size_t i = 0; i < m_sprites.size(); ++i)
+    {
+        render(*m_sprites[i]->sprite);
+    }
     m_vao->unbind();
 
+    m_shader->unbind();
+}
 
-    sprite.getTexture().unbind();
+void renderer::SpriteRenderer::setShader(Shader* shader)
+{
+    m_shader = shader;
+}
+
+void renderer::SpriteRenderer::setCamera(Camera* camera)
+{
+    m_camera = camera;
 }

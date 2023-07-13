@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Soladium/UI;$(SolutionDir)third-party/glfw/include;$(MONO_PROJECT)include/mono-2.0;$(SolutionDir)third-party/assimp/include;$(SolutionDir)third-party/glm/include;$(SolutionDir)third-party/glew/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)third-party/glfw/include;$(MONO_PROJECT)include/mono-2.0;$(SolutionDir)third-party/glm/include;$(SolutionDir)third-party/glew/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -136,7 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Soladium/UI;$(SolutionDir)third-party/glfw/include;$(MONO_PROJECT)include/mono-2.0;$(SolutionDir)third-party/assimp/include;$(SolutionDir)third-party/glm/include;$(SolutionDir)third-party/glew/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)third-party/glfw/include;$(MONO_PROJECT)include/mono-2.0;$(SolutionDir)third-party/glm/include;$(SolutionDir)third-party/glew/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -152,74 +152,61 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="core\Component.cpp" />
+    <ClCompile Include="core\components\MonoComponent.cpp" />
+    <ClCompile Include="core\components\SpriteComponent.cpp" />
+    <ClCompile Include="core\components\TransformComponent.cpp" />
     <ClCompile Include="core\GameObject.cpp" />
-    <ClCompile Include="core\MonoComponent.cpp" />
-    <ClCompile Include="core\scenes\Scene.cpp" />
-    <ClCompile Include="core\SpriteRendererComponent.cpp" />
-    <ClCompile Include="core\TransformComponent.cpp" />
-    <ClCompile Include="renderer\Camera.cpp" />
-    <ClCompile Include="renderer\OrthographicCamera.cpp" />
-    <ClCompile Include="renderer\ProjectionCamera.cpp" />
+    <ClCompile Include="core\State.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="renderer\cameras\Camera.cpp" />
+    <ClCompile Include="renderer\cameras\OrthographicCamera.cpp" />
+    <ClCompile Include="renderer\cameras\ProjectionCamera.cpp" />
     <ClCompile Include="renderer\shaders\Shader.cpp" />
     <ClCompile Include="renderer\Sprite.cpp" />
     <ClCompile Include="renderer\SpriteRenderer.cpp" />
     <ClCompile Include="renderer\textures\Texture.cpp" />
-    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="renderer\VAO\Vao.cpp" />
     <ClCompile Include="renderer\Window.cpp" />
-    <ClCompile Include="scripting\ScriptClass.cpp" />
-    <ClCompile Include="scripting\ScriptEngine.cpp" />
+    <ClCompile Include="script\ScriptClass.cpp" />
+    <ClCompile Include="script\ScriptEngine.cpp" />
     <ClCompile Include="Soladium.cpp" />
-    <ClCompile Include="ui\imgui.cpp" />
-    <ClCompile Include="ui\imgui_demo.cpp" />
-    <ClCompile Include="ui\imgui_draw.cpp" />
-    <ClCompile Include="ui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="ui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="ui\imgui_tables.cpp" />
-    <ClCompile Include="ui\imgui_widgets.cpp" />
-    <ClCompile Include="utils\Keyboard.cpp" />
-    <ClCompile Include="utils\Mouse.cpp" />
+    <ClCompile Include="utils\FileSystem.cpp" />
+    <ClCompile Include="input\Keyboard.cpp" />
+    <ClCompile Include="utils\Log.cpp" />
+    <ClCompile Include="input\Mouse.cpp" />
     <ClCompile Include="utils\Profiler.cpp" />
+    <ClCompile Include="utils\VaoGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\Component.h" />
+    <ClInclude Include="core\components\MonoComponent.h" />
+    <ClInclude Include="core\components\SpriteComponent.h" />
+    <ClInclude Include="core\components\TransformComponent.h" />
     <ClInclude Include="core\GameObject.h" />
-    <ClInclude Include="core\MonoComponent.h" />
-    <ClInclude Include="core\scenes\Scene.h" />
-    <ClInclude Include="core\SpriteRendererComponent.h" />
-    <ClInclude Include="core\TransformComponent.h" />
-    <ClInclude Include="math\Color.h" />
-    <ClInclude Include="math\Transform.h" />
-    <ClInclude Include="math\Vector2.h" />
-    <ClInclude Include="math\Vector3.h" />
-    <ClInclude Include="renderer\Camera.h" />
-    <ClInclude Include="renderer\OrthographicCamera.h" />
-    <ClInclude Include="renderer\ProjectionCamera.h" />
+    <ClInclude Include="core\State.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="renderer\cameras\Camera.h" />
+    <ClInclude Include="renderer\cameras\OrthographicCamera.h" />
+    <ClInclude Include="renderer\cameras\ProjectionCamera.h" />
     <ClInclude Include="renderer\shaders\Shader.h" />
     <ClInclude Include="renderer\Sprite.h" />
     <ClInclude Include="renderer\SpriteRenderer.h" />
     <ClInclude Include="renderer\textures\stb_image.h" />
     <ClInclude Include="renderer\textures\Texture.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="renderer\VAO\Vao.h" />
-    <ClInclude Include="renderer\VAO\Vertex.h" />
+    <ClInclude Include="renderer\vao\Vao.h" />
     <ClInclude Include="renderer\Window.h" />
-    <ClInclude Include="scripting\mono.h" />
-    <ClInclude Include="scripting\ScriptClass.h" />
-    <ClInclude Include="scripting\ScriptEngine.h" />
-    <ClInclude Include="ui\imconfig.h" />
-    <ClInclude Include="ui\imgui.h" />
-    <ClInclude Include="ui\imgui_impl_glfw.h" />
-    <ClInclude Include="ui\imgui_impl_opengl3.h" />
-    <ClInclude Include="ui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="ui\imgui_internal.h" />
-    <ClInclude Include="ui\imstb_rectpack.h" />
-    <ClInclude Include="ui\imstb_textedit.h" />
-    <ClInclude Include="ui\imstb_truetype.h" />
-    <ClInclude Include="utils\FileUtils.h" />
-    <ClInclude Include="utils\Keyboard.h" />
-    <ClInclude Include="utils\Mouse.h" />
+    <ClInclude Include="script\mono.h" />
+    <ClInclude Include="script\ScriptClass.h" />
+    <ClInclude Include="script\ScriptEngine.h" />
+    <ClInclude Include="utils\FileSystem.h" />
+    <ClInclude Include="utils\Interface.h" />
+    <ClInclude Include="input\Keyboard.h" />
+    <ClInclude Include="utils\Log.h" />
+    <ClInclude Include="input\Mouse.h" />
     <ClInclude Include="utils\Profiler.h" />
+    <ClInclude Include="utils\Singleton.h" />
+    <ClInclude Include="utils\TypeIdGenerator.h" />
+    <ClInclude Include="utils\VaoGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Shaders\base.frag" />

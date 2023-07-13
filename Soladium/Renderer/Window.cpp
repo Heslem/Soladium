@@ -3,87 +3,96 @@
 #include <exception>
 #include <iostream>
 
-Window::Window(const char* title, const int& width, const int& height)
+#include "../utils/Log.h"
+
+renderer::Window::Window()
+    : m_glfwWindow(nullptr)
 {
-    std::cout << "GLFW version: " << glfwGetVersionString() << std::endl;
+
+}
+
+renderer::Window::~Window()
+{
+    glfwTerminate();
+}
+
+void renderer::Window::initialize(const char* title, const int& width, const int& height)
+{
+    Log::message("GLFW version:" + std::string(glfwGetVersionString()));
 
     if (!glfwInit()) {
-        std::cout << "Could't initialize glfw." << std::endl;
-        throw std::exception();
+        Log::error("Could't initialize glfw.");
+        throw std::runtime_error("Could't initialize glfw.");
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+    m_glfwWindow = glfwCreateWindow(width, height, title, NULL, NULL);
 
-    m_Window = glfwCreateWindow(width, height, title, NULL, NULL);
-    
-    if (!m_Window) {
+    if (!m_glfwWindow) {
+        Log::error("Could't create window.");
         std::cout << "Could't create window." << std::endl;
-        throw std::exception();
+        throw std::runtime_error("Could't create window.");
     }
 
-    glfwMakeContextCurrent(m_Window);
+    glfwMakeContextCurrent(m_glfwWindow);
     glewExperimental = GL_TRUE;
+
     if (glewInit() != GLEW_OK) {
-        std::cout << "Could't initialize glew." << std::endl;
-        throw std::exception();
+        Log::error("Could't initialize glew.");
+        throw std::runtime_error("Could't initialize glew.");
     }
 
     glViewport(0, 0, width, height);
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); 
-    glfwSwapInterval(1);
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-Window::~Window()
+void renderer::Window::setVsync(const bool& value)
 {
-    glfwTerminate();
+    glfwSwapInterval((int)value);
 }
 
-void Window::pollEvents()
+void renderer::Window::setCursorVisible(const bool& value)
+{
+    glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, value ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
+}
+
+void renderer::Window::setResizeable(const bool& value)
+{
+    glfwWindowHint(GLFW_RESIZABLE, (int)value);
+}
+
+void renderer::Window::setTitle(const char* title)
+{
+    glfwSetWindowTitle(m_glfwWindow, title);
+}
+
+void renderer::Window::pollEvents()
 {
     glfwPollEvents();
 }
 
-void Window::clear()
+void renderer::Window::clear()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::display()
+void renderer::Window::display()
 {
-    glfwSwapBuffers(m_Window);
+    glfwSwapBuffers(m_glfwWindow);
 }
 
-void Window::close()
+void renderer::Window::close()
 {
-    glfwSetWindowShouldClose(m_Window, 1);
+    glfwSetWindowShouldClose(m_glfwWindow, 1);
 }
 
-bool Window::isOpen() const
+bool renderer::Window::isOpen() const
 {
-    return !glfwWindowShouldClose(m_Window);
-}
-
-void Window::setBackgroundColor(const Color& color)
-{
-    glClearColor(BYTE_TO_FLOAT(color.R), BYTE_TO_FLOAT(color.G), BYTE_TO_FLOAT(color.B), 1);
-}
-
-void Window::setTitle(const char* title)
-{
-    glfwSetWindowTitle(m_Window, title);
+    return !glfwWindowShouldClose(m_glfwWindow);
 }

@@ -10,6 +10,6 @@ namespace SoladuimAPI
     public class SEngine
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static void Close();
+        public extern static float GetDeltaTime();
     }
 }

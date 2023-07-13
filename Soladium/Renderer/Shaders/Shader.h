@@ -9,29 +9,33 @@
 
 #include <unordered_map>
 
-class Shader
+namespace renderer
 {
-public:
-	Shader();
-	Shader(const Shader&) = delete;
-	~Shader();
+	class Shader sealed
+	{
+		std::unordered_map<const char*, GLint> m_cachedUniforms;
 
-	void loadFromFiles(const char* vertexFilename, const char* fragmentFilename);
-	void loadFromSource(const char* vertexSource, const char* fragmentSource);
+		GLuint compileShader(const GLint& shaderType, const GLchar* source);
 
-	void bind() const;
-	void unbind() const;
+		GLuint m_id;
+	public:
+		Shader();
+		~Shader();
 
-	void registerUniform(const char* name);
+		void loadFromFiles(const char* vertexFilename, const char* fragmentFilename);
+		void loadFromSources(const char* vertexSource, const char* fragmentSource);
 
-	void uniform(const char* name, const int& value);
-	void uniform(const char* name, const glm::mat4& value);
+		void bind() const;
+		void unbind() const;
 
-	GLint getUniformLocation(const char* name) const;
-private:
-	std::unordered_map<const char*, GLint> m_cachedUniforms;
+		void registerUniform(const char* name);
 
-	GLuint compileShader(const GLint& type, const GLchar* source);
+		void uniform(const char* name, const int& value);
+		void uniform(const char* name, const glm::mat4& value);
 
-	GLuint m_ID;
-};
+		GLint getUniformLocation(const char* name) const;
+	private:
+		Shader(const Shader&) = delete;
+		void operator=(const Shader&) = delete;
+	};
+}

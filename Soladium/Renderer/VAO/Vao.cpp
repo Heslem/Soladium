@@ -1,17 +1,17 @@
 #include "Vao.h"
 
-Vao::Vao(GLfloat* vertices, unsigned long long vSize, GLuint* indices, unsigned long long iSize, const GLenum& mode, const GLsizei& count)
-	: m_Mode(mode), m_Count(count)
+renderer::Vao::Vao(GLfloat* vertices, const size_t& vSize, GLuint* indices, const size_t& iSize, const GLenum& mode, const GLsizei& count)
+    : m_mode(mode), m_count(count)
 {
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    glBindVertexArray(VAO);
+    glGenVertexArrays(1, &m_vao);
+    glGenBuffers(1, &m_vbo);
+    glGenBuffers(1, &m_ebo);
+    glBindVertexArray(m_vao);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, vSize, vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, iSize, indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
@@ -26,24 +26,24 @@ Vao::Vao(GLfloat* vertices, unsigned long long vSize, GLuint* indices, unsigned 
     glBindVertexArray(0);
 }
 
-Vao::~Vao()
+renderer::Vao::~Vao()
 {
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &m_vao);
+    glDeleteBuffers(1, &m_vbo);
+    glDeleteBuffers(1, &m_ebo);
 }
 
-void Vao::draw()
+void renderer::Vao::render()
 {
-    glDrawElements(m_Mode, m_Count, GL_UNSIGNED_INT, 0);
+    glDrawElements(m_mode, m_count, GL_UNSIGNED_INT, 0);
 }
 
-void Vao::bind()
+void renderer::Vao::bind()
 {
-    glBindVertexArray(VAO);
+    glBindVertexArray(m_vao);
 }
 
-void Vao::unbind()
+void renderer::Vao::unbind()
 {
     glBindVertexArray(0);
 }

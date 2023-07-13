@@ -2,18 +2,20 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-class Vao sealed
-{
-public:
-	Vao(GLfloat* vertices, unsigned long long vSize, GLuint* indices, unsigned long long iSize, const GLenum& mode, const GLsizei& count);
-	~Vao();
+namespace renderer {
+	class Vao sealed
+	{
+	public:
+		Vao(GLfloat* vertices, const size_t& vSize, GLuint* indices, const size_t& iSize, const GLenum& mode, const GLsizei& count);
+		~Vao();
 
-	void draw();
+		void render();
 
-	void bind();
-	void unbind();
-private:
-	GLuint VBO, VAO, EBO;
-	GLenum m_Mode;
-	GLsizei m_Count;
-};
+		void bind();
+		void unbind();
+	private:
+		GLuint m_vao, m_vbo, m_ebo;
+		GLenum m_mode;
+		GLsizei m_count;
+	};
+}

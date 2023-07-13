@@ -2,22 +2,23 @@
 
 Profiler::Profiler()
 {
+
 }
 
 Profiler::~Profiler()
 {
+
 }
 
-void Profiler::start(const char* name)
+void Profiler::begin(const char* name)
 {
-	m_Tasks.push(new ProfilerTask(name, std::chrono::high_resolution_clock::now()));
+    m_tasks.push(Task(name, glfwGetTime()));
 }
 
-Profiler::ProfilerTask* Profiler::end()
+Profiler::Task Profiler::end()
 {
-	ProfilerTask* temp = m_Tasks.top();
-	m_Tasks.pop();
-
-	temp->computeTime(std::chrono::high_resolution_clock::now());
-	return temp;
+    m_tasks.top().end(glfwGetTime());
+    Task ret(m_tasks.top());
+    m_tasks.pop();
+    return ret;
 }

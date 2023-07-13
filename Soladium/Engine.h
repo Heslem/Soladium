@@ -1,51 +1,35 @@
 #pragma once
+#include "utils/Singleton.h"
+
 #include <iostream>
-
-#include "renderer/Window.h"
 #include "renderer/shaders/Shader.h"
-#include "utils/Profiler.h"
-#include "renderer/Camera.h"
-#include "renderer/ProjectionCamera.h"
-#include "renderer/OrthographicCamera.h"
+#include "renderer/vao/Vao.h"
+#include "renderer/textures/Texture.h"
+#include "renderer/cameras/ProjectionCamera.h"
 #include "renderer/SpriteRenderer.h"
-#include "renderer/Sprite.h"
+#include "core/State.h"
 
-#include "core/scenes/Scene.h"
-
-#include "scripting/ScriptEngine.h"
-
+#include "input/Keyboard.h"
+#include "input/Mouse.h"
 
 class Engine sealed
 {
+	SINGLETON(Engine)
+
+		renderer::Shader* m_shader;
+	renderer::Texture* m_texture;
+	renderer::Camera* m_camera;
+	renderer::SpriteRenderer* m_spriteRenderer;
+	core::State* m_state;
+
+	static float m_deltaTime;
+	// TODO: add ups
 public:
-	~Engine();
-	Engine(const Engine&) = delete;
 
 	void run();
 	void close();
 
-	static Engine& getInstance();
+	static const float& getDeltaTime() { return m_deltaTime; }
+	renderer::SpriteRenderer& getSpriteRenderer() const { return *m_spriteRenderer; }
 
-	Profiler& getProfiler();
-
-	void setFramerateLimit(const double& framerate) { m_framerate = framerate; }
-	const double& getFramerate() const noexcept { return m_framerate; }
-private:
-	Engine();
-
-	void update();
-	void render();
-
-	Texture* temp_texture;
-	Shader* temp_shader;
-	GameObject* test;
-	// TODO: make scene manager
-	Scene* m_scene;
-	SpriteRenderer* m_spriteRenderer;
-	Camera* m_camera;
-
-	double m_framerate;
-	// Engine things
-	Profiler m_profiler;
-	Window* m_window;
 };
